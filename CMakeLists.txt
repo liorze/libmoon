@@ -43,6 +43,8 @@ SET(DPDK_LIBS
 #Add Mellanox libraries if options are specified
 if(USE_MLX5 OR USE_MLX4)
 	SET(DPDK_LIBS ${DPDK_LIBS} ibverbs)
+	SET(DPDK_LIBS ${DPDK_LIBS} mnl)
+	SET(DPDK_LIBS ${DPDK_LIBS} mlx5)
 endif()
 
 if(USE_MLX5)
