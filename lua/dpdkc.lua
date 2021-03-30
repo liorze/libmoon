@@ -167,34 +167,54 @@ ffi.cdef[[
 		uint16_t ring_size; /**< Device-preferred size of queue rings */
 		uint16_t nb_queues; /**< Device-preferred number of queues */
 	};
+
 	struct rte_eth_rxconf {
 		struct rte_eth_thresh rx_thresh; /**< RX ring threshold registers. */
 		uint16_t rx_free_thresh; /**< Drives the freeing of RX descriptors. */
 		uint8_t rx_drop_en; /**< Drop packets if no descriptors are available. */
 		uint8_t rx_deferred_start; /**< Do not start queue with rte_eth_dev_start(). */
+		/**
+		 * Per-queue Rx offloads to be set using DEV_RX_OFFLOAD_* flags.
+		 * Only offloads set on rx_queue_offload_capa or rx_offload_capa
+		 * fields on rte_eth_dev_info structure are allowed to be set.
+		 */
 		uint64_t offloads;
+
+		uint64_t reserved_64s[2]; /**< Reserved for future fields */
+		void *reserved_ptrs[2];   /**< Reserved for future fields */
 	};
+
 
 	struct rte_eth_txconf {
 		struct rte_eth_thresh tx_thresh; /**< TX ring threshold registers. */
 		uint16_t tx_rs_thresh; /**< Drives the setting of RS bit on TXDs. */
 		uint16_t tx_free_thresh; /**< Start freeing TX buffers if there are
-				      less free descriptors than this value. */
+					      less free descriptors than this value. */
 
 		uint8_t tx_deferred_start; /**< Do not start queue with rte_eth_dev_start(). */
+		/**
+		 * Per-queue Tx offloads to be set  using DEV_TX_OFFLOAD_* flags.
+		 * Only offloads set on tx_queue_offload_capa or tx_offload_capa
+		 * fields on rte_eth_dev_info structure are allowed to be set.
+		 */
 		uint64_t offloads;
+
+		uint64_t reserved_64s[2]; /**< Reserved for future fields */
+		void *reserved_ptrs[2];   /**< Reserved for future fields */
 	};
 
 	struct rte_eth_dev_info {
-		void *device; /** Generic device information */
+		struct rte_device *device; /** Generic device information */
 		const char *driver_name; /**< Device Driver name. */
 		unsigned int if_index; /**< Index to bound host interface, or 0 if none.
-					 Use if_indextoname() to translate into an interface name. */
-		uint16_t min_mtu;       /**< Minimum MTU allowed */
-		uint16_t max_mtu;       /**< Maximum MTU allowed */
+			Use if_indextoname() to translate into an interface name. */
+		uint16_t min_mtu;	/**< Minimum MTU allowed */
+		uint16_t max_mtu;	/**< Maximum MTU allowed */
 		const uint32_t *dev_flags; /**< Device flags */
 		uint32_t min_rx_bufsize; /**< Minimum size of RX buffer. */
 		uint32_t max_rx_pktlen; /**< Maximum configurable length of RX pkt. */
+		/** Maximum configurable size of LRO aggregated packet. */
+		uint32_t max_lro_pkt_size;
 		uint16_t max_rx_queues; /**< Maximum number of RX queues. */
 		uint16_t max_tx_queues; /**< Maximum number of TX queues. */
 		uint32_t max_mac_addrs; /**< Maximum number of MAC addresses. */
@@ -232,7 +252,14 @@ ffi.cdef[[
 		struct rte_eth_dev_portconf default_txportconf;
 		/** Generic device capabilities (RTE_ETH_DEV_CAPA_). */
 		uint64_t dev_capa;
+		/**
+		 * Switching information for ports on a device with a
+		 * embedded managed interconnect/switch.
+		 */
 		struct rte_eth_switch_info switch_info;
+
+		uint64_t reserved_64s[2]; /**< Reserved for future fields */
+		void *reserved_ptrs[2];   /**< Reserved for future fields */
 	};
 
 	struct libmoon_device_config {

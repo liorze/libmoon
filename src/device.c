@@ -64,7 +64,10 @@ int dpdk_configure_device(struct libmoon_device_config* cfg) {
 	const char* driver = dpdk_get_driver_name(cfg->port);
 	bool is_i40e_device = strcmp("net_i40e", driver) == 0;
 	struct rte_eth_dev_info dev_info;
-	rte_eth_dev_info_get(cfg->port, &dev_info);
+        if (!rte_eth_dev_is_valid_port(cfg->port))
+                return -1;
+	int ret = rte_eth_dev_info_get(cfg->port, &dev_info);
+	if (ret) return ret;
 	// TODO: make fdir configurable
 	struct rte_fdir_conf fdir_conf = {
 		.mode = RTE_FDIR_MODE_PERFECT,
@@ -128,7 +131,7 @@ int dpdk_configure_device(struct libmoon_device_config* cfg) {
 			.mq_mode = cfg->enable_rss ? ETH_MQ_RX_RSS : ETH_MQ_RX_NONE,
 			.split_hdr_size = 0,
 			.offloads = rx_offloads,
-			.max_rx_pkt_len = dev_info.max_rx_pktlen
+			.max_rx_pkt_len = RTE_ETHER_MAX_LEN
 		},
 		.txmode = {
 			.mq_mode = ETH_MQ_TX_NONE,
