@@ -5,9 +5,8 @@
 	branch = v2.1
 [submodule "deps/dpdk"]
 	path = deps/dpdk
-	url = https://github.com/emmericp/dpdk
+	url = https://dpdk.org/git/dpdk-stable
 	ignore = untracked
-	branch = v19.05-libmoon
 [submodule "deps/pciids"]
 	path = deps/pciids
 	url = https://github.com/emmericp/pciids

@@ -128,7 +128,7 @@ int dpdk_configure_device(struct libmoon_device_config* cfg) {
 			.mq_mode = cfg->enable_rss ? ETH_MQ_RX_RSS : ETH_MQ_RX_NONE,
 			.split_hdr_size = 0,
 			.offloads = rx_offloads,
-			.max_rx_pkt_len = dev_info.max_rx_pktlen
+			.max_rx_pkt_len = RTE_ETHER_MAX_LEN
 		},
 		.txmode = {
 			.mq_mode = ETH_MQ_TX_NONE,
@@ -203,7 +203,7 @@ const char* dpdk_get_driver_name(int port) {
 }
 
 uint64_t dpdk_get_mac_addr(int port, char* buf) {
-	struct ether_addr addr;
+	struct rte_ether_addr addr;
 	rte_eth_macaddr_get(port, &addr);
 	if (buf) {
 		sprintf(buf, "%02X:%02X:%02X:%02X:%02X:%02X", addr.addr_bytes[0], addr.addr_bytes[1], addr.addr_bytes[2], addr.addr_bytes[3], addr.addr_bytes[4], addr.addr_bytes[5]);
