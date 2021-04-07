@@ -125,7 +125,7 @@ int dpdk_configure_device(struct libmoon_device_config* cfg) {
 		& dev_info.tx_offload_capa;
 	struct rte_eth_conf port_conf = {
 		.rxmode = {
-			.mq_mode = cfg->enable_rss ? ETH_MQ_RX_RSS : ETH_MQ_RX_NONE,
+			.mq_mode = ETH_MQ_RX_RSS,
 			.split_hdr_size = 0,
 			.offloads = rx_offloads,
 			.max_rx_pkt_len = RTE_ETHER_MAX_LEN
